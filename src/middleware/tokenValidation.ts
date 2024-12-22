@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export async function authenticate(
+export async function tokenValidation(
   req: Request,
   res: Response,
   next: NextFunction
@@ -11,7 +11,8 @@ export async function authenticate(
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ error: "Unauthorized" });
+    return;
   }
 
   const token = authHeader.split(" ")[1];
@@ -21,13 +22,14 @@ export async function authenticate(
   });
 
   if (!storedToken || new Date() > storedToken.expiresAt) {
-    return res.status(401).json({ error: "Token expired or invalid" });
+    res.status(401).json({ error: "Token expired or invalid" });
+    return;
   }
 
   const user = await prisma.user.findUnique({
     where: { id: storedToken.userId },
   });
 
-  req.body.user = user;
+  req.body.user = { user, token };
   next();
 }

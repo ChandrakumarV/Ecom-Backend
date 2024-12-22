@@ -20,6 +20,7 @@ model User {
   email      String  @unique
   password   String
   Token      Token[]
+  cart       cart[]
 }
 
 model Token {
@@ -28,6 +29,28 @@ model Token {
   token     String   @unique
   createdAt DateTime @default(now())
   expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String?
+  name      String
+  detail    String
+  price     Int
+  rating    Int
+  sales     Int
+  createdAt DateTime @default(now())
+  cart      cart[]
+}
+
+model cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

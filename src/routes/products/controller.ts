@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 
 export const getProducts = (req: Request, res: Response) => {
-  res.render("chat", {
-    pageTitle: "Chat",
-    pageID: "chat",
-  });
+  res.status(200).json([
+    { id: 1, name: "Watch" },
+    { id: 2, name: "Bat" },
+  ]);
 };
 export const getProduct = (req: Request, res: Response) => {
   console.log(req.params.id);

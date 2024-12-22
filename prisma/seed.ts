@@ -1,66 +1,91 @@
 import { PrismaClient } from "@prisma/client";
-import { randomBytes } from "crypto";
 
 const prisma = new PrismaClient();
 
+const users = [
+  {
+    first_name: "John",
+    last_name: "Doe",
+    email: "john.doe@example.com",
+    password: "hashed_password_123", // Replace with actual hashed password
+  },
+  {
+    first_name: "Jane",
+    last_name: "Smith",
+    email: "jane.smith@example.com",
+    password: "hashed_password_456", // Replace with actual hashed password
+  },
+];
+
+const products = [
+  {
+    name: "Laptop",
+    detail: "High performance laptop",
+    price: 1200,
+    rating: 4,
+    sales: 200,
+  },
+  {
+    name: "Headphones",
+    detail: "Noise-cancelling headphones",
+    price: 300,
+    rating: 5,
+    sales: 150,
+  },
+  {
+    name: "Smartphone",
+    detail: "Latest model smartphone",
+    price: 800,
+    rating: 4,
+    sales: 500,
+  },
+];
 async function main() {
-  const users = [
+  const usersRes = await Promise.all(
+    users.map(async (user) => {
+      return prisma.user.create({
+        data: user,
+      });
+    })
+  );
+  const productsRes = await Promise.all(
+    products.map(async (product) => {
+      return prisma.product.create({
+        data: product,
+      });
+    })
+  );
+
+  const carts = [
     {
-      first_name: "John",
-      last_name: "Doe",
-      email: "john.doe@example.com",
-      password: "password123",
+      userId: usersRes[0].id,
+      productId: productsRes[0].id,
+      quantity: 1,
     },
     {
-      first_name: "Jane",
-      last_name: "Smith",
-      email: "jane.smith@example.com",
-      password: "securepass456",
+      userId: usersRes[1].id,
+      productId: productsRes[1].id,
+      quantity: 2,
     },
     {
-      first_name: "Michael",
-      last_name: "Brown",
-      email: "michael.brown@example.com",
-      password: "pass789secure",
-    },
-    {
-      first_name: "Emily",
-      last_name: "Davis",
-      email: "emily.davis@example.com",
-      password: "emily@2024",
-    },
-    {
-      first_name: "Chris",
-      last_name: "Taylor",
-      email: "chris.taylor@example.com",
-      password: "taylorpassword",
+      userId: usersRes[1].id,
+      productId: productsRes[2].id,
+      quantity: 1,
     },
   ];
 
-  // user seed
-  for (const user of users) {
-    const userData = await prisma.user.create({
-      data: user,
-    });
-
-    const token = randomBytes(32).toString("hex");
-
-    await prisma.token.create({
-      data: {
-        userId: userData.id,
-        token: token,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24), // Token expires in 24 hours
-      },
-    });
-  }
-
-  console.log("Seeding complete!");
+  await Promise.all(
+    carts.map(async (cart) => {
+      return prisma.cart.create({
+        data: cart,
+      });
+    })
+  );
 }
 
 main()
   .catch((e) => {
-    console.error(e);
-    process.exit(1);
+    throw e;
   })
   .finally(async () => {
     await prisma.$disconnect();

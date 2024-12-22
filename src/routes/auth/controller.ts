@@ -10,8 +10,11 @@ const prisma = new PrismaClient();
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
+  console.log("req.body");
+  console.log(req.body);
+
   if (!(email && password)) {
-    res.status(400).json({ error: "All fields are required" });
+    res.status(400).json({ error: "Email or Password missing" });
     return;
   }
 
@@ -89,21 +92,14 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const logout = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    res.status(400).json({ error: "No token provided" });
-    return;
-  }
-
   try {
-    const decoded = decodeToken(token);
-
-    // Delete the token f
+    console.log("asdjfaksdjf");
+    const { id, token } = req.body.user;
+    // Delete the token
     await prisma.token.deleteMany({
       where: {
-        userId: decoded.userId,
-        token: token,
+        userId: id,
+        token,
       },
     });
 
