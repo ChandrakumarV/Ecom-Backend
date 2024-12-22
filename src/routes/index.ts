@@ -1,11 +1,11 @@
-import express, { NextFunction, Request, Response, Router } from "express";
-import loginRouter from "./login";
-import productsRouter from "./products";
+import express, { Router } from "express";
+import authRouter from "./auth";
 import cartRouter from "./cart";
+import productsRouter from "./products";
 
 const router: Router = express.Router();
 
-router.use("/login", loginRouter);
+router.use("/", authRouter);
 router.use("/products", productsRouter);
 router.use("/cart", cartRouter);
 
