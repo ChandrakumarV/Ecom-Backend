@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
-const bcrypt = require("bcrypt");
+import { PrismaClient } from '@prisma/client'
+import { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export const getProfile = async (req: Request, res: Response) => {
-  const { id } = req.body.user;
+  const { id } = req.body.user
 
   try {
     // check exiting user
@@ -15,32 +15,32 @@ export const getProfile = async (req: Request, res: Response) => {
         firstName: true,
         lastName: true,
         email: true,
-        _count: { select: { cart: true } },
+        _count: { select: { cart: true } }
       },
-      where: { id },
-    });
+      where: { id }
+    })
 
     if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
+      res.status(404).json({ error: 'User not found' })
+      return
     }
 
-    const { _count, ...userData } = user;
-    const structuredData = { cartCount: _count.cart, ...userData };
-    res.json(structuredData);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
+    const { _count, ...userData } = user
+    const structuredData = { cartCount: _count.cart, ...userData }
+    res.json(structuredData)
+  } catch {
+    res.status(500).json({ error: 'Internal server error' })
   }
-};
+}
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const body = req.body;
-  const userId = req.body.user.id;
+  const body = req.body
+  const userId = req.body.user.id
 
-  delete body.user;
+  delete body.user
   try {
     if (body.password) {
-      body.password = await bcrypt.hash(body.password, 10);
+      body.password = await bcrypt.hash(body.password, 10)
     }
 
     const user = await prisma.user.update({
@@ -50,17 +50,17 @@ export const updateProfile = async (req: Request, res: Response) => {
         id: true,
         firstName: true,
         lastName: true,
-        email: true,
-      },
-    });
+        email: true
+      }
+    })
 
     if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
+      res.status(404).json({ error: 'User not found' })
+      return
     }
 
-    res.send({ message: "profile updated" });
+    res.send({ message: 'profile updated' })
   } catch (err) {
-    res.status(500).json({ error: "Internal server error", message: err });
+    res.status(500).json({ error: 'Internal server error', message: err })
   }
-};
+}
