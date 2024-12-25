@@ -1,14 +1,15 @@
-import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
+import express, { Request, Response } from "express";
 
 import config from "./config";
 import router from "./routes";
+const bcrypt = require("bcrypt");
 
 export const createServer = () => {
   const app = express();
   app.use(bodyParser.json());
 
-  app.get("/health", (req: Request, res: Response) => {
+  app.get("/health", async (req: Request, res: Response) => {
     res.json({ ok: true, environment: config.env });
   });
 

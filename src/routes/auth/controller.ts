@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import { decodeToken, generateToken } from "../../utils/token";
 import { PrismaClient } from "@prisma/client";
+import { Request, Response } from "express";
+import { generateToken } from "../../utils/token";
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
@@ -10,37 +10,40 @@ const prisma = new PrismaClient();
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  console.log("req.body");
-  console.log(req.body);
-
   if (!(email && password)) {
     res.status(400).json({ error: "Email or Password missing" });
     return;
   }
 
   try {
-    // check exiting user
+    // check user is exit or not
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       res.status(404).json({ error: "User not found" });
       return;
     }
-
     //valid password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Incorrect Password" });
       return;
     }
 
     const token = generateToken({ userId: user.id, email });
 
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // Set expiration to 1 hour
-    await prisma.token.create({
-      data: {
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    await prisma.token.upsert({
+      where: {
         userId: user.id,
+      },
+      create: {
+        token,
+        expiresAt,
+        userId: user.id,
+      },
+      update: {
         token,
         expiresAt,
       },
@@ -53,9 +56,9 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
-  if (!(first_name && last_name && email && password)) {
+  if (!(firstName && lastName && email && password)) {
     res.status(400).json({ error: "All fields are required" });
     return;
   }
@@ -65,7 +68,7 @@ export const register = async (req: Request, res: Response) => {
     });
 
     if (existingUser) {
-      res.status(400).json({ error: "Email already in use" });
+      res.status(400).json({ error: "User already exist" });
       return;
     }
 
@@ -73,15 +76,15 @@ export const register = async (req: Request, res: Response) => {
 
     //create user
     const user = await prisma.user.create({
-      data: { first_name, last_name, email, password: hashedPassword },
+      data: { firstName, lastName, email, password: hashedPassword },
     });
 
     res.status(201).json({
       message: "User registered successfully",
       user: {
         id: user.id,
-        firstName: user.first_name,
-        lastName: user.last_name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
       },
     });

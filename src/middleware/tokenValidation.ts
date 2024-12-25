@@ -10,6 +10,11 @@ export async function tokenValidation(
 ) {
   const authHeader = req.headers.authorization;
 
+  if (!authHeader) {
+    res.status(401).json({ error: "Token doesn't exist" });
+    return;
+  }
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ error: "Unauthorized" });
     return;
@@ -21,7 +26,7 @@ export async function tokenValidation(
     where: { token },
   });
 
-  if (!storedToken || new Date() > storedToken.expiresAt) {
+  if (!storedToken || new Date() > storedToken?.expiresAt) {
     res.status(401).json({ error: "Token expired or invalid" });
     return;
   }
@@ -30,6 +35,6 @@ export async function tokenValidation(
     where: { id: storedToken.userId },
   });
 
-  req.body.user = { user, token };
+  req.body.user = { ...user, token };
   next();
 }

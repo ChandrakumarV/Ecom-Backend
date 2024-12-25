@@ -14,18 +14,18 @@ datasource db {
 }
 
 model User {
-  id         Int     @id @default(autoincrement())
-  first_name String
-  last_name  String
-  email      String  @unique
-  password   String
-  Token      Token[]
-  cart       cart[]
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String  @unique
+  password  String
+  Token     Token[]
+  cart      cart[]
 }
 
 model Token {
   id        Int      @id @default(autoincrement())
-  userId    Int
+  userId    Int      @unique
   token     String   @unique
   createdAt DateTime @default(now())
   expiresAt DateTime
@@ -52,7 +52,12 @@ model cart {
   createdAt DateTime @default(now())
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
 }
 
-// npx prisma migrate dev
+// npx prisma migrate dev -n ""
+// npx prisma db push
 // npx prisma db seed
+// npx prisma migrate deploy
+// npx prisma generate

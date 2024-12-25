@@ -4,16 +4,16 @@ const prisma = new PrismaClient();
 
 const users = [
   {
-    first_name: "John",
-    last_name: "Doe",
+    firstName: "John",
+    lastName: "Doe",
     email: "john.doe@example.com",
-    password: "hashed_password_123", // Replace with actual hashed password
+    password: "$2b$10$.onD7sqcJl0wF6wzDABluu/aoITzjVBszsdYw1ckaDZIfqWfD/LDm",
   },
   {
-    first_name: "Jane",
-    last_name: "Smith",
+    firstName: "Jane",
+    lastName: "Smith",
     email: "jane.smith@example.com",
-    password: "hashed_password_456", // Replace with actual hashed password
+    password: "$2b$10$.onD7sqcJl0wF6wzDABluu/aoITzjVBszsdYw1ckaDZIfqWfD/LDm",
   },
 ];
 
