@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { generateToken } from "../../utils/token";
-const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
 
@@ -34,6 +33,7 @@ export const login = async (req: Request, res: Response) => {
     const token = generateToken({ userId: user.id, email });
 
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
     await prisma.token.upsert({
       where: {
         userId: user.id,

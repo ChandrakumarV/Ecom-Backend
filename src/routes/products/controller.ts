@@ -28,6 +28,7 @@ export const getProducts = async (req: Request, res: Response) => {
       .json({ error: "Internal server error", message: err?.message });
   }
 };
+
 export const getProduct = async (req: Request, res: Response) => {
   try {
     const userId = req.body.user.id;
@@ -73,6 +74,7 @@ export const addProduct = async (req: Request, res: Response) => {
       .json({ error: "Internal server error", message: err?.message });
   }
 };
+
 export const udpateProduct = async (req: Request, res: Response) => {
   try {
     const product_id = +req.params.id;

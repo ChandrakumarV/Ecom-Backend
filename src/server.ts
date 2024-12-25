@@ -3,10 +3,10 @@ import express, { Request, Response } from "express";
 
 import config from "./config";
 import router from "./routes";
-const bcrypt = require("bcrypt");
 
 export const createServer = () => {
   const app = express();
+
   app.use(bodyParser.json());
 
   app.get("/health", async (req: Request, res: Response) => {
