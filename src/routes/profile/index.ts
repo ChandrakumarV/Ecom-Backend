@@ -1,9 +1,9 @@
-import express, { Router } from "express";
-import { getProfile, updateProfile } from "./controller";
+import express, { Router } from 'express'
+import { getProfile, updateProfile } from './controller'
 
-const profileRouter: Router = express.Router();
+const profileRouter: Router = express.Router()
 
-profileRouter.get("/", getProfile);
-profileRouter.post("/", updateProfile);
+profileRouter.get('/', getProfile)
+profileRouter.post('/', updateProfile)
 
-export default profileRouter;
+export default profileRouter

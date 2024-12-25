@@ -1,19 +1,19 @@
-import bodyParser from "body-parser";
-import express, { Request, Response } from "express";
+import bodyParser from 'body-parser'
+import express, { Request, Response } from 'express'
 
-import config from "./config";
-import router from "./routes";
+import config from './config'
+import router from './routes'
 
 export const createServer = () => {
-  const app = express();
+  const app = express()
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json())
 
-  app.get("/health", async (req: Request, res: Response) => {
-    res.json({ ok: true, environment: config.env });
-  });
+  app.get('/health', async (req: Request, res: Response) => {
+    res.json({ ok: true, environment: config.env })
+  })
 
-  app.use(router);
+  app.use(router)
 
-  return app;
-};
+  return app
+}
