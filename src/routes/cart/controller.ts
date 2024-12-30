@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 export const getCarts = async (req: Request, res: Response) => {
   try {
     const userId = req.body.user.id
-    console.log(userId)
+
     const carts = await prisma.cart.findMany({
       where: { userId },
       select: { id: true, createdAt: true, quantity: true, product: true }

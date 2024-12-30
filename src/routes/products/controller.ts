@@ -60,11 +60,6 @@ export const addProduct = async (req: Request, res: Response) => {
   try {
     const { detail, name, price, rating, sales } = req.body
 
-    if (!(detail && name && price && rating && sales)) {
-      throw new Error(
-        'All fields are required (detail, name, price, rating, sales)'
-      )
-    }
     const products = await prisma.product.create({
       data: { detail, name, price, rating, sales }
     })
@@ -81,8 +76,8 @@ export const udpateProduct = async (req: Request, res: Response) => {
     const product_id = +req.params.id
 
     const body = req.body
-    delete body.user
-    console.log(body)
+    delete body.userId
+
     if (!body) {
       throw new Error('Body cannot be empty')
     }

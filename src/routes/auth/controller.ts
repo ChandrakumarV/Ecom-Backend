@@ -58,10 +58,6 @@ export const login = async (req: Request, res: Response) => {
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body
 
-  if (!(firstName && lastName && email && password)) {
-    res.status(400).json({ error: 'All fields are required' })
-    return
-  }
   try {
     const existingUser = await prisma.user.findUnique({
       where: { email }
@@ -96,7 +92,6 @@ export const register = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    console.log('asdjfaksdjf')
     const { id, token } = req.body.user
     // Delete the token
     await prisma.token.deleteMany({
