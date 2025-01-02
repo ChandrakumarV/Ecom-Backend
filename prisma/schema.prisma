@@ -38,8 +38,10 @@ model Product {
   name      String
   detail    String
   price     Int
+  offer     Int
   rating    Int
   sales     Int
+  seller    String
   createdAt DateTime @default(now())
   cart      cart[]
 }
@@ -60,4 +62,4 @@ model cart {
 // npx prisma db push
 // npx prisma db seed
 // npx prisma migrate deploy
-// npx prisma generate
+// npx prisma generate  
