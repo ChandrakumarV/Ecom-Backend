@@ -14,6 +14,7 @@ const router = express_1.default.Router();
 router.use('/', auth_1.default);
 router.use('/products', tokenValidation_1.tokenValidation, products_1.default);
 router.use('/cart', tokenValidation_1.tokenValidation, cart_1.default);
-router.use('/user', tokenValidation_1.tokenValidation, user_1.default);
+router.use('/user', user_1.default);
+// router.use('/user', tokenValidation, userRouter)
 router.use('/profile', tokenValidation_1.tokenValidation, profile_1.default);
 exports.default = router;
