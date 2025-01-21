@@ -28,6 +28,8 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
+    "socket.io": "^4.8.1",
+    "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {

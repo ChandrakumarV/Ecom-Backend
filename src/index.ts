@@ -1,7 +1,7 @@
-import { createServer } from './server'
 import config from './config'
+import { ServerConfig } from './server'
 
-const server = createServer()
+const server = ServerConfig()
 const { port } = config
 
 server.listen(port, () => {

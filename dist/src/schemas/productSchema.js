@@ -7,6 +7,8 @@ exports.addProductSchema = zod_1.z.object({
     detail: zod_1.z.string().max(40),
     price: zod_1.z.number(),
     rating: zod_1.z.number().max(5),
-    sales: zod_1.z.number()
+    sales: zod_1.z.number(),
+    offer: zod_1.z.number(),
+    seller: zod_1.z.string()
 });
 exports.updateProductSchema = exports.addProductSchema;

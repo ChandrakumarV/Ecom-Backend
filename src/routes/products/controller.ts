@@ -58,10 +58,10 @@ export const getProduct = async (req: Request, res: Response) => {
 
 export const addProduct = async (req: Request, res: Response) => {
   try {
-    const { detail, name, price, rating, sales } = req.body
+    const { detail, name, price, rating, sales, offer, seller } = req.body
 
     const products = await prisma.product.create({
-      data: { detail, name, price, rating, sales }
+      data: { detail, name, price, rating, sales, offer, seller }
     })
     res.status(200).json(products)
   } catch (err: any) {

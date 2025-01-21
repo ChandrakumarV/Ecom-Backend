@@ -31,21 +31,27 @@ const products = [
         detail: 'High performance laptop',
         price: 1200,
         rating: 4,
-        sales: 200
+        sales: 200,
+        seller: 'chandru',
+        offer: 3.3
     },
     {
         name: 'Headphones',
         detail: 'Noise-cancelling headphones',
         price: 300,
         rating: 5,
-        sales: 150
+        sales: 150,
+        seller: 'naresh',
+        offer: 3.3
     },
     {
         name: 'Smartphone',
         detail: 'Latest model smartphone',
         price: 800,
         rating: 4,
-        sales: 500
+        sales: 500,
+        seller: 'vijay',
+        offer: 3.3
     }
 ];
 function main() {
