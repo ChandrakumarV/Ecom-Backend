@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "npx tsc",
+    "build": "prisma generate && npx tsc",
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts",
     "format": "prettier --write .",
