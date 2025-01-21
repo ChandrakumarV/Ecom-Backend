@@ -61,7 +61,7 @@ export const addProduct = async (req: Request, res: Response) => {
     const { detail, name, price, rating, sales, offer, seller } = req.body
 
     const products = await prisma.product.create({
-      data: { detail, name, price, rating, sales, offer, seller }
+      data: { detail, name, price, rating, sales, seller, offer }
     })
     res.status(200).json(products)
   } catch (err: any) {
