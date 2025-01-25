@@ -1,5 +1,5 @@
-node_modules
+node_modules/
 .env
-
-/dist
-dist
+fiverr-clients-cutv-39ba00ccda1e.json
+package-lock.json
+dist/

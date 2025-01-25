@@ -6,6 +6,7 @@ import config from './config'
 import router from './routes'
 import { v4 as uuid } from 'uuid'
 import { createServer } from 'http'
+import morgan from 'morgan'
 
 type items = {
   id: string
@@ -15,6 +16,8 @@ type items = {
 export const ServerConfig = () => {
   const app = express()
   const server = createServer(app)
+
+  app.use(morgan('dev'))
 
   const socketIo = new Server(server, {
     cors: {
